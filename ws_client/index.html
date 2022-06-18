@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <ul id="msgList">
+    <li>消息列表：</li>
+  </ul>
+  <input type="text" class="txtMsg" value="">
+  <button id="btn1">发送消息</button>
+  <script>
+    //websocket客户端
+    let btn1 = document.getElementById('btn1');
+
+    //创建websocket，并与服务器建立连接通道
+    var Socket = new WebSocket("ws://localhost:8001");
+
+    btn1.addEventListener('click', function () {
+      let txtMsg = document.querySelector(".txtMsg").value.trim() ? document.querySelector(".txtMsg").value.trim() :
+        "Hello Websocket!"
+      Socket.send(txtMsg);
+    })
+
+    //设置websocket接收消息事件
+    Socket.onmessage = function (e) {
+      console.log('得到的websocket服务器的数据：', e.data);
+      let msgList = document.getElementById('msgList')
+      let li = document.createElement("li")
+      li.innerHTML = e.data
+      msgList.appendChild(li)
+    }
+  </script>
+</body>
+
+</html>
